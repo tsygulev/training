@@ -1,3 +1,5 @@
 <?php
 
-phpinfo();
+echo "rtv";
+$a = "20";
+echo "$a"
