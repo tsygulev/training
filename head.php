@@ -1,6 +1,9 @@
 <?php
+
 header("Content-Type: text/html; charset=utf-8");
+
 session_start();
+
 if (isset($_POST["send"])) {
     $from = htmlspecialchars($_POST["from"]);
     $to = htmlspecialchars($_POST["to"]);
@@ -35,8 +38,8 @@ if (isset($_POST["send"])) {
         $subject = "=?utf-8?B?" . base64_encode($subject) . "?=";
         $headers = "From : $from\r\nReply-to: $from\r\nContent-type: text/pain; charset = utf-8\r\n";
         mail($to, $subject, $message, $headers);
-        /*header("Location : success.php");
-        exit();*/
+        header('Location: success.php');
+        exit();
     }
 }
 ?>
@@ -53,22 +56,22 @@ if (isset($_POST["send"])) {
 
             <label>От кого:</label>
             <br/>
-            <input type="text" name="from" value="<?= $_SESSION["from"] ?>" />
-            <span style="color:red"><?= $error_from ?></span><br/>
+            <input type="text" name="from" value="<?php echo isset($_SESSION["from"]) ? $_SESSION["from"] : null ?>">
+            <span style="color:red"><?php echo isset($error_from) ? $error_from : null ?></span><br/>
             <label>Кому:</label>
             <br/>
-            <input type="text" name="to" value="<?= $_SESSION["to"] ?>" />
-            <span style="color:red"><?= $error_to ?></span>
+            <input type="text" name="to" value="<?php echo isset($_SESSION["to"]) ? $_SESSION["to"] : null ?>">
+            <span style="color:red"><?php echo isset($error_to) ? $error_to : null ?></span>
             <br/>
             <label>Тема:</label>
             <br/>
-            <input type="text" name="subject" value="<?= $_SESSION["subject"] ?>"/>
-            <span style="color:red"><?= $error_subject ?></span><br/>
+            <input type="text" name="subject" value="<?php echo isset($_SESSION["subject"]) ? $_SESSION["subject"] : null ?>">
+            <span style="color:red"><?php echo isset($error_subject) ? $error_subject : null ?></span><br/>
             <label>Сообщение:</label>
             <br/>
-            <textarea name="message"  cols="40" rows="15"  ><?= $_SESSION["message"] ?></textarea>
-            <span style="color:red"><?= $error_message ?></span><br/>
-            <input type="submit" name="send" value="Отправить" />
+            <textarea name="message" cols="40" rows="15"  ><?php echo isset($_SESSION["message"]) ? $_SESSION["message"] : null ?></textarea>
+            <span style="color:red"><?php echo isset($error_message) ? $error_message : null ?></span><br/>
+            <input type="submit" name="send" value="Отправить">
 
         </form>
     </body>
