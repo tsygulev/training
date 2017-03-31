@@ -1,5 +1,8 @@
 <?php
 
-echo "rtv";
-$a = "20";
-echo "$a"
+function data() {
+    $a = date('Y-m-d H:i:s');
+
+ return $a;
+}
+data();
