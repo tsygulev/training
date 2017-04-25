@@ -1,8 +1,8 @@
 <?php
 
-function data() {
-    $a = date('Y-m-d H:i:s');
+require_once './PaginationInterface.php';
+require_once './Pagination.php';
 
- return $a;
-}
-data();
+$pagination = new Pagination(123, 7, $_GET['page'] ?? 1);
+
+$pagination->render(); // [1, 2, 3, 4, 5, ....]
