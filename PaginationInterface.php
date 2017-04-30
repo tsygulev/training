@@ -14,20 +14,20 @@ interface PaginationInterface
     /**
      * Sets a count of total items.
      *
-     * @param int $total
+     * @param int $totalItems
      *
      * @return self
      */
-    public function setTotalItems(int $total): self;
+    public function setTotalItems(int $totalItems): self;
 
     /**
      * Sets a current page number.
      *
-     * @param int $page
+     * @param int $currentPage
      *
      * @return self
      */
-    public function setCurrentPage(int $page): self;
+    public function setCurrentPage(int $currentPage): self;
 
     /**
      * @return array List of pagination pages

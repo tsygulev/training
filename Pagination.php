@@ -5,28 +5,65 @@ class Pagination implements PaginationInterface
     /**
      * @var int
      */
-    private $firstPage = 1;
+    private $limit;
 
     /**
      * @var int
      */
-    private $endPage;
+    private $totalItems;
 
     /**
-     * @param int $total
+     * @var int
+     */
+    private $currentPage;
+
+    /**
+     * @param int $totalItems
      * @param int $limit
      * @param int $currentPage
      */
-    public function __construct(int $total, int $limit, int $currentPage)
+    public function __construct(int $totalItems = 0, int $limit = 10, int $currentPage = 1)
     {
-        $this->endPage = ceil($total / $limit);
+        $this->setTotalItems($totalItems);
+        $this->setLimit($limit);
+        $this->setCurrentPage($currentPage);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLimit(int $limit): \PaginationInterface
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalItems(int $totalItems): \PaginationInterface
+    {
+        $this->totalItems = $totalItems;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrentPage(int $currentPage): \PaginationInterface
+    {
+        $this->currentPage = $currentPage;
+
+        return $this;
     }
 
     /**
      * @return array
      */
-    public function render(): array
+    public function getPagesList(): array
     {
-        return range($this->firstPage, $this->endPage);
+        return range(1, ceil($this->totalItems / $this->limit));
     }
 }
