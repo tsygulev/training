@@ -34,7 +34,7 @@ class Pagination implements PaginationInterface
      */
     public function setLimit(int $limit): \PaginationInterface
     {
-        $this->limit = $limit;
+        $this->limit = $limit < 1 ? 1 : $limit;
 
         return $this;
     }
@@ -44,7 +44,7 @@ class Pagination implements PaginationInterface
      */
     public function setTotalItems(int $totalItems): \PaginationInterface
     {
-        $this->totalItems = $totalItems;
+        $this->totalItems = $totalItems < 0 ? 0 : $totalItems;
 
         return $this;
     }
@@ -54,7 +54,7 @@ class Pagination implements PaginationInterface
      */
     public function setCurrentPage(int $currentPage): \PaginationInterface
     {
-        $this->currentPage = $currentPage;
+        $this->currentPage = $currentPage < 1 ? 1 : $currentPage;
 
         return $this;
     }
@@ -64,6 +64,10 @@ class Pagination implements PaginationInterface
      */
     public function getPagesList(): array
     {
+        if ($this->totalItems <= $this->limit) {
+            return [];
+        }
+
         return range(1, ceil($this->totalItems / $this->limit));
     }
 }
