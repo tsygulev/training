@@ -18,6 +18,11 @@ class Pagination implements PaginationInterface
     private $currentPage;
 
     /**
+     * @var int
+     */
+    private $aroundStep = 2;
+
+    /**
      * @param int $totalItems
      * @param int $limit
      * @param int $currentPage
@@ -60,14 +65,76 @@ class Pagination implements PaginationInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
+    }
+
+    /**
+     * Sets a number of pages around current page.
+     *
+     * @param int $aroundStep
+     *
+     * @return self
+     */
+    public function setAroundStep(int $aroundStep): \Pagination
+    {
+        $this->aroundStep = $aroundStep < 0 ? 1 : $aroundStep;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getPagesList(): array
     {
-        if ($this->totalItems <= $this->limit) {
+        $pagesCount = intval(ceil($this->totalItems / $this->limit));
+
+        if ($pagesCount <= 1) {
             return [];
         }
 
-        return range(1, ceil($this->totalItems / $this->limit));
+        if ($pagesCount <= $this->aroundStep * 2) {
+            return range(1, $pagesCount);
+        }
+
+        if ($this->currentPage > $pagesCount) {
+            $this->currentPage = $pagesCount;
+        }
+
+        $pages = [];
+        $leftLimit = $this->currentPage - $this->aroundStep;
+        $rightLimit = $this->currentPage + $this->aroundStep;
+
+        if ($leftLimit < 1) {
+            $leftLimit = 1;
+        }
+
+        if ($rightLimit > $pagesCount) {
+            $rightLimit = $pagesCount;
+        }
+
+        if ($leftLimit !== 1) {
+            $pages[] = 1;
+        }
+
+        if ($leftLimit - $this->aroundStep >= 1) {
+            $pages[] = null;
+        }
+
+        $pages = array_merge($pages, range($leftLimit, $rightLimit));
+
+        if ($rightLimit + $this->aroundStep <= $pagesCount) {
+            $pages[] = null;
+        }
+
+        if ($rightLimit !== $pagesCount) {
+            $pages[] = $pagesCount;
+        }
+
+        return $pages;
     }
 }

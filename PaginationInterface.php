@@ -30,6 +30,13 @@ interface PaginationInterface
     public function setCurrentPage(int $currentPage): self;
 
     /**
+     * Gets a current page number.
+     *
+     * @return int
+     */
+    public function getCurrentPage(): int;
+
+    /**
      * @return array List of pagination pages
      */
     public function getPagesList(): array;
